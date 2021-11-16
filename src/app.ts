@@ -17,6 +17,8 @@ class Catagochi {
 
   private displayStatus : HTMLDivElement;
 
+  private lastTickTimeStamp : number;
+
   /**
    * Creates the Catagochi game. Sets all of the attributes of the
    * cat (mood, hunger, sleep, aliveness) to their default states.
@@ -121,13 +123,40 @@ class Catagochi {
     this.gameDOM.querySelector('#buttonPlay').addEventListener('click', this.play.bind(this));
     this.gameDOM.querySelector('#buttonSleep').addEventListener('click', this.sleep.bind(this));
   }
+
+  /**
+   * Start the automatic updating process of this object
+   */
+  private startRunning() {
+    // Set the last tick timestamp to current time
+    this.lastTickTimeStamp = performance.now();
+    // Request the browser to call the step method on next animation frame
+    requestAnimationFrame(this.step);
+  }
+
+  /**
+   * This MUST be an arrow method in order to keep the `this` variable working
+   * correctly. It will otherwise be overwritten by another object caused by
+   * javascript scoping behaviour.
+   *
+   * @param timestamp a `DOMHighResTimeStamp` similar to the one returned by
+   *   `performance.now()`, indicating the point in time when `requestAnimationFrame()`
+   *   starts to execute callback functions
+   */
+  private step = (timestamp: number) => {
+    // Check if it is time to perform the next Tick
+    if (timestamp - this.lastTickTimeStamp >= 3000) {
+      // Call the method of this object that needs to be called
+      this.gameTick();
+      this.lastTickTimeStamp = timestamp;
+    }
+    // Request the browser to call the step method on next animation frame
+    requestAnimationFrame(this.step);
+  };
 }
 
 const init = () => {
   const catGame = new Catagochi(document.querySelector('#game'));
-  setInterval(() => {
-    catGame.gameTick();
-  }, 3000);
 };
 
 window.addEventListener('load', init);
