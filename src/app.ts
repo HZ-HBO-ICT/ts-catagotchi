@@ -38,6 +38,7 @@ class Catagochi {
 
     this.getDOMElements();
     this.updateDisplays();
+    this.startRunning();
     Catagochi.meow();
   }
 
