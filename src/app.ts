@@ -1,4 +1,4 @@
-class Catagochi {
+class Catagotchi {
   private alive : boolean;
 
   private mood : number;
@@ -20,7 +20,7 @@ class Catagochi {
   private lastTickTimeStamp : number;
 
   /**
-   * Creates the Catagochi game. Sets all of the attributes of the
+   * Creates the Catagotchi game. Sets all of the attributes of the
    * cat (mood, hunger, sleep, aliveness) to their default states.
    * Once set, the DOM elements will be gathered and updated.
    * Finally, the cat will meow to indicate that it is indeed alive!
@@ -39,7 +39,7 @@ class Catagochi {
     this.getDOMElements();
     this.updateDisplays();
     this.startRunning();
-    Catagochi.meow();
+    this.meow();
   }
 
   /**
@@ -47,7 +47,10 @@ class Catagochi {
    * Not accessible directly, but is used as a response by certain actions.
    * TODO: Add some sound effects
    */
-  private static meow() {
+  private meow() : void {
+    if (!this.alive) {
+      throw new Error('Dead catagotchi cannot meow. Something is wrong.');
+    }
     console.log('meow!');
   }
 
@@ -81,23 +84,23 @@ class Catagochi {
   }
 
   /**
-   * Poor catagochi died.
+   * Poor catagotchi died.
    */
   private catDied() {
     this.alive = false;
   }
 
   /**
-   * Feed the Catagochi. Will improve mood and reduce hunger.
+   * Feed the Catagotchi. Will improve mood and reduce hunger.
    */
   public feed() {
     this.hunger -= 2;
     this.mood += 1;
-    Catagochi.meow();
+    this.meow();
   }
 
   /**
-   * Play with the Catagochi. It does make Catagochi sleepy, though.
+   * Play with the Catagotchi. It does make Catagotchi sleepy, though.
    */
   public play() {
     this.mood += 1;
@@ -106,7 +109,7 @@ class Catagochi {
   }
 
   /**
-   * Ask Catagochi to sleeeeep. Improved mood and energy, but makes it hungry too.
+   * Ask Catagotchi to sleeeeep. Improved mood and energy, but makes it hungry too.
    */
   public sleep() {
     this.energy += 2;
@@ -157,7 +160,7 @@ class Catagochi {
 }
 
 const init = () => {
-  const catGame = new Catagochi(document.querySelector('#game'));
+  const catGame = new Catagotchi(document.querySelector('#game'));
 };
 
 window.addEventListener('load', init);
