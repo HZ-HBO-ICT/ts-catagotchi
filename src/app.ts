@@ -69,7 +69,7 @@ class Catagotchi {
    * TODO: currently called from outside the current class. Make the game tick internal?
    * TODO: move the update of attributes to its own function.
    */
-  public gameTick() {
+  private gameTick() {
     if (this.alive) {
       if (this.hunger >= 10 || this.energy < 0) {
         this.catDied();
@@ -93,29 +93,29 @@ class Catagotchi {
   /**
    * Feed the Catagotchi. Will improve mood and reduce hunger.
    */
-  public feed() {
+  private feed = () => {
     this.hunger -= 2;
     this.mood += 1;
     this.meow();
-  }
+  };
 
   /**
    * Play with the Catagotchi. It does make Catagotchi sleepy, though.
    */
-  public play() {
+  private play = () => {
     this.mood += 1;
     this.energy -= 2;
     this.hunger += 1;
-  }
+  };
 
   /**
    * Ask Catagotchi to sleeeeep. Improved mood and energy, but makes it hungry too.
    */
-  public sleep() {
+  private sleep = () => {
     this.energy += 2;
     this.hunger += 1;
     this.mood += 1;
-  }
+  };
 
   private getDOMElements() {
     this.displayHunger = this.gameDOM.querySelector('#displayHunger');
@@ -123,9 +123,9 @@ class Catagotchi {
     this.displayEnergy = this.gameDOM.querySelector('#displayEnergy');
     this.displayStatus = this.gameDOM.querySelector('#displayStatus');
 
-    this.gameDOM.querySelector('#buttonFeed').addEventListener('click', this.feed.bind(this));
-    this.gameDOM.querySelector('#buttonPlay').addEventListener('click', this.play.bind(this));
-    this.gameDOM.querySelector('#buttonSleep').addEventListener('click', this.sleep.bind(this));
+    this.gameDOM.querySelector('#buttonFeed').addEventListener('click', this.feed);
+    this.gameDOM.querySelector('#buttonPlay').addEventListener('click', this.play);
+    this.gameDOM.querySelector('#buttonSleep').addEventListener('click', this.sleep);
   }
 
   /**
@@ -159,8 +159,6 @@ class Catagotchi {
   };
 }
 
-const init = () => {
-  const catGame = new Catagotchi(document.querySelector('#game'));
-};
+const init = () => new Catagotchi(document.querySelector('#game'));
 
 window.addEventListener('load', init);
